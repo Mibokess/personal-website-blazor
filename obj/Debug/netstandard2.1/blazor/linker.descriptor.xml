@@ -1,0 +1,5 @@
+﻿<linker>
+  <assembly fullname="personal-website">
+    <type fullname="*" required="true" />
+  </assembly>
+</linker>
