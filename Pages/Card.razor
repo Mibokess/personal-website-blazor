@@ -1,13 +1,17 @@
-<div class="flex-initial w-5/6 bg-gray-600">
-    @if (!(Event.Date.Month == 1) || !(Event.Date.Day == 1))
+<div class="flex flex-row items-start"> 
+    <div class="relative flex-none max-w-xxs md:max-w-sm m-4 p-6 bg-white rounded-lg shadow hover:shadow-md" @onclick="toggleChildren">
+        <div class="ml-6 pt-1">
+            <h4 class="font-sans text-xl text-start text-gray-900 leading-tight">@Event.title</h4>
+            <p class="font-sans text-base text-start text-gray-600 leading-normal">@Event.description</p>
+        </div>
+    </div>
+    @if (Event.children.Length > 0 && childrenVisible)
     {
-        <div class="flex flex-row items-start"> 
-            <div class="relative flex-none max-w-xxs md:max-w-sm m-4 p-6 bg-white rounded-lg shadow hover:shadow-md">
-                <div class="ml-6 pt-1">
-                    <h4 class="font-sans text-xl text-start text-gray-900 leading-tight">@Event.title</h4>
-                    <p class="font-sans text-base text-start text-gray-600 leading-normal">@Event.description</p>
-                </div>
-            </div>
+        <div class="flex flex-col items-start">
+            @foreach (var child in Event.children)
+            {
+                <Card Event="@child"/>
+            }
         </div>
     }
 </div>
@@ -15,4 +19,11 @@
 @code {
     [Parameter]
     public TimelineEvent Event { get; set; }
+
+    public bool childrenVisible { get; set; } = false; 
+
+    void toggleChildren()
+    {
+        childrenVisible = !childrenVisible;
+    }
 }

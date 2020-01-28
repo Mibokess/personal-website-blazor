@@ -7,16 +7,30 @@
 
 <TimelineElement Events="@Events" />
 
-@JsonSerializer.Serialize(readEventsFromFile()[0])
-
 @code {
-    TimelineEvent[] Events = readEventsFromFile();
+    List<TimelineEvent> Events = readEventsFromFile();
 
-    static TimelineEvent[] readEventsFromFile() 
+    static List<TimelineEvent> readEventsFromFile() 
     {
-        TimelineEvent[] events = JsonSerializer.Deserialize<List<TimelineEvent>>(jsonString).ToArray();
+        var events = JsonSerializer.Deserialize<List<TimelineEvent>>(jsonString);
+        var eventsWithYears = new List<TimelineEvent>(events.Count);
 
-        return events;
+        eventsWithYears.Add(new TimelineEvent("1/1/" + events[0].Date.Year));
+
+        for (int i = 0; i < events.Count - 1; i++)
+        {
+            eventsWithYears.Add(events[i]);
+            
+            if (events[i].Date.Year != events[i + 1].Date.Year) 
+            {
+                eventsWithYears.Add(new TimelineEvent("1/1/" + events[i].Date.Year));
+            }
+        }
+
+        eventsWithYears.Add(events[events.Count - 1]);
+        eventsWithYears.Add(new TimelineEvent("1/1/" + events[events.Count - 1].Date.Year));
+
+        return eventsWithYears;
     }
 
     static string jsonString = 

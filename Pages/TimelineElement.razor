@@ -19,12 +19,17 @@
                     // Display dot and year
                 }
             </div>
-            <Card Event="@Event"/>
+            <div class="flex-initial w-5/6 bg-gray-600">
+                @if (!(Event.Date.Month == 1) || !(Event.Date.Day == 1))
+                {
+                    <Card Event="@Event"/>
+                }
+            </div>
         </div>
     }
 </div>
 
 @code {
     [Parameter]
-    public TimelineEvent[] Events { get; set; }
+    public List<TimelineEvent> Events { get; set; }
 }
